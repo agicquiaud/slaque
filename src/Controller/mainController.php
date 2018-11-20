@@ -15,4 +15,11 @@ class mainController extends Controller
     {
         return $this->render("main/home.html.twig");
     }
+     /**
+      * @Route("/test/test/test")
+      */
+     public function test()
+     {
+         die("ok");
+     }
 }
