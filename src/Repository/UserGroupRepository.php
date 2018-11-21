@@ -1,16 +1,17 @@
 <?php
-
 namespace App\Repository;
 
+use App\Entity\Group;
+use App\Entity\User;
 use App\Entity\UserGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method UserGroup|null find($id, $lockMode = null, $lockVersion = null)
- * @method UserGroup|null findOneBy(array $criteria, array $orderBy = null)
- * @method UserGroup[]    findAll()
- * @method UserGroup[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Group|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Group|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Group[]    findAll()
+ * @method Group[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class UserGroupRepository extends ServiceEntityRepository
 {
@@ -19,32 +20,39 @@ class UserGroupRepository extends ServiceEntityRepository
         parent::__construct($registry, UserGroup::class);
     }
 
-    // /**
-    //  * @return UserGroup[] Returns an array of UserGroup objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Group[] returns a UserGroup to which the logged-in user belongs
+     */
+    public function findUserGroupByUser(User $user)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('ug');
+        $qb->andWhere("ug.user LIKE u");
+        $qb->setParameter("u", $user);
 
-    /*
-    public function findOneBySomeField($value): ?UserGroup
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb->select("ug");
+        $query = $qb->getQuery();
+        $userGroup = $query->getresult();
+        return [
+            'UserGroups'=>$userGroup,
+        ];
     }
-    */
+
+    /**
+     *
+     * @param Group $group
+     * @return array UserGroup
+     */
+    public function findUserGroupByGroup(Group $group)
+    {
+        $qb = $this->createQueryBuilder('ug');
+        $qb->andWhere("ug.groupe LIKE g");
+        $qb->setParameter("g", $group);
+
+        $qb->select("ug");
+        $query = $qb->getQuery();
+        $userGroup = $query->getresult();
+        return [
+            'UserGroups'=>$userGroup,
+        ];
+    }
 }

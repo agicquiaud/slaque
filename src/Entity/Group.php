@@ -7,7 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\GroupRepository",)
+ * @ORM\Table(name="groupe")
  */
 class Group
 {
@@ -32,7 +33,6 @@ class Group
     {
         $this->userGroups = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -81,5 +81,4 @@ class Group
 
         return $this;
     }
-
 }

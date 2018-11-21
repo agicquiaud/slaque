@@ -1,4 +1,11 @@
 {% extends "base.html.twig" %}
+{% block group %}
+    {% for group in user.userGroups %}
+        <li class="nav-item">
+            <a class="nav-link text-white" href=""> {{ group.groupe.name }}</a>
+        </li>
+    {% endfor %}
+{% endblock %}
 {% block body %}
 
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Group;
+use App\Entity\User;
+use App\Entity\UserGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,6 +21,16 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
+    /**
+     * @return Group[] returns a group table to which the logged-in user belongs
+     */
+    public function findGroupByUser(User $user)
+    {
+        $userGroup = new UserGroup();
+        $qb = $this->createQueryBuilder('g');
+        $qb->andWhere("g.userGroups AS ug");
+        $qb->setParameter("ug", $userGroup);
+    }
     // /**
     //  * @return Group[] Returns an array of Group objects
     //  */

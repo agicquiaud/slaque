@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Group;
+use App\Entity\UserGroup;
 use App\Form\GroupType;
 use App\Repository\GroupRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,32 +16,32 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GroupController extends Controller
 {
-    /**
-     * @Route("/", name="group_index", methods="GET")
-     */
-    public function index(GroupRepository $groupRepository): Response
-    {
-        return $this->render('group/index.html.twig', ['groups' => $groupRepository->findAll()]);
-    }
 
     /**
-     * @Route("/new", name="group_new", methods="GET|POST")
+     * @Route("/create", name="group_create", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function create(Request $request): Response
     {
         $group = new Group();
         $form = $this->createForm(GroupType::class, $group);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $userGroup = new UserGroup();
+            $userGroup->setGroupe($group);
+            $userGroup->setAdmin(true);
+            $userGroup->setUser($this->getUser());
+            $group->addUserGroup($userGroup);
             $em->persist($group);
+            $em->persist($userGroup);
             $em->flush();
 
-            return $this->redirectToRoute('group_index');
+            return $this->redirectToRoute('home');
         }
 
-        return $this->render('group/new.html.twig', [
+        return $this->render('group/create.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
         ]);
@@ -55,7 +56,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="group_edit", methods="GET|POST")
+     * @Route("/edit", name="group_edit", methods="GET|POST")
      */
     public function edit(Request $request, Group $group): Response
     {
@@ -65,7 +66,7 @@ class GroupController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('group_index', ['id' => $group->getId()]);
+            return $this->redirectToRoute('home', ['id' => $group->getId()]);
         }
 
         return $this->render('group/edit.html.twig', [
@@ -75,7 +76,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="group_delete", methods="DELETE")
+     * @Route("/delete", name="group_delete", methods="DELETE")
      */
     public function delete(Request $request, Group $group): Response
     {
@@ -85,6 +86,6 @@ class GroupController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('group_index');
+        return $this->redirectToRoute('home');
     }
 }
