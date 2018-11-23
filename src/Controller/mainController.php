@@ -15,9 +15,9 @@ class mainController extends Controller
      */
     public function home()
     {
-        return $this->render("main/home.html.twig",[
-            'user'=>$this->getUser(),
-        ]);
+            return $this->render("main/home.html.twig", [
+                'user' => $this->getUser(),
+            ]);
     }
      /**
       * @Route("/test/test/test")

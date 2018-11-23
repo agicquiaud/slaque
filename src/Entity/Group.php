@@ -29,9 +29,15 @@ class Group
      */
     private $userGroups;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="groupe", orphanRemoval=true)
+     */
+    private $message;
+
     public function __construct()
     {
         $this->userGroups = new ArrayCollection();
+        $this->message = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +82,37 @@ class Group
             // set the owning side to null (unless already changed)
             if ($userGroup->getGroupe() === $this) {
                 $userGroup->setGroupe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->message->contains($message)) {
+            $this->message[] = $message;
+            $message->setGroupe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->message->contains($message)) {
+            $this->message->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getGroupe() === $this) {
+                $message->setGroupe(null);
             }
         }
 

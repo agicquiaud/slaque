@@ -5,12 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <link rel="stylesheet" href="{{ asset('css/message.css') }}">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
     </head>
     <body>
-    <div class="container" style="margin-top:56px; margin-left:0px; padding-left: 0px">
+    <div class="container pr-0 mr-0 ml-0 pl-0 mw-100" style="padding-top: 56px">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <a class="navbar-brand" href="{{ path('home') }}">Slaque</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,14 +26,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">Disabled</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
                     </li>
                     {% endif %}
                 </ul>
@@ -61,23 +54,9 @@
                 </ul>
             </div>
         </nav>
-        <nav class="col-md-2 d-none d-md-block bg-secondary sidebar">
-        <div class="sidebar-sticky">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ path('group_create') }}"> Add group <i class="fas fa-plus-circle"></i></a>
-                </li>
-            </ul>
-            <ul class="nav flex-column">
-                {% block group %}{% endblock %}
-            </ul>
-        </div>
-        </nav>
-        <div id="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             {% block body %}
 
             {% endblock %}
-        </div>
     </div>
         {% block javascripts %}{% endblock %}
     </body>
